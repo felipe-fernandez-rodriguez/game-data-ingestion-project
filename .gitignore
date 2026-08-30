@@ -1,0 +1,20 @@
+# --- Python ---
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+.env
+.pytest_cache/
+*.egg-info/
+
+# --- Editores / SO ---
+.vscode/
+.idea/
+.DS_Store
+
+# --- Evidencias de la actividad EA1 ---
+# NOTA: A propósito NO se ignoran data/raw/games.json, data/database/games.db,
+# output/games_sample.csv ni output/audit_report.txt, ya que estos archivos
+# son evidencia exigida por la actividad y deben quedar versionados/visibles
+# en el repositorio.

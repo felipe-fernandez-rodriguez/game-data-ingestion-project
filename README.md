@@ -1,4 +1,4 @@
-# EA1. Ingestión de Datos desde un API
+# Ingestión de Datos desde un API
 
 ## Introducción
 
@@ -111,8 +111,8 @@ ea1-api-ingestion/
 ### Windows
 
 ```bash
-git clone https://github.com/<tu-usuario>/ea1-api-ingestion.git
-cd ea1-api-ingestion
+git clone https://github.com/felipe-fernandez-rodriguez/game-data-ingestion-project.git
+cd game-data-ingestion-project
 python -m venv venv
 venv\Scripts\activate
 pip install -r requirements.txt
@@ -121,8 +121,8 @@ pip install -r requirements.txt
 ### Linux / macOS
 
 ```bash
-git clone https://github.com/<tu-usuario>/ea1-api-ingestion.git
-cd ea1-api-ingestion
+git clone https://github.com/felipe-fernandez-rodriguez/game-data-ingestion-project.git
+cd game-data-ingestion-project
 python -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt

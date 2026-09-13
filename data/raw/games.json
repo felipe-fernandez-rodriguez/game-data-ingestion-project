@@ -637,6 +637,19 @@
     "freetogame_profile_url": "https://www.freetogame.com/honkai-star-rail"
   },
   {
+    "id": 650,
+    "title": "Tyr",
+    "thumbnail": "https://www.freetogame.com/g/650/thumbnail.jpg",
+    "short_description": "A free-to-play tank shooter with customizable skill trees.",
+    "game_url": "https://www.freetogame.com/open/tyr",
+    "genre": "Shooter",
+    "platform": "PC (Windows)",
+    "publisher": "Stoke Games",
+    "developer": "Stoke Games",
+    "release_date": "2026-09-02",
+    "freetogame_profile_url": "https://www.freetogame.com/tyr"
+  },
+  {
     "id": 649,
     "title": "Soul's Remnant",
     "thumbnail": "https://www.freetogame.com/g/649/thumbnail.jpg",

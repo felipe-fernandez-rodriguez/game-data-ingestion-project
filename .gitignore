@@ -13,8 +13,17 @@ venv/
 .idea/
 .DS_Store
 
-# --- Evidencias de la actividad EA1 ---
+# --- PySpark (EA2) ---
+# Metadatos que Spark puede generar localmente al escribir con su propio
+# writer (no se usan en este proyecto, que escribe CSV con Pandas, pero se
+# excluyen por si se generan en pruebas manuales).
+derby.log
+metastore_db/
+spark-warehouse/
+
+# --- Evidencias de EA1 y EA2 ---
 # NOTA: A propósito NO se ignoran data/raw/games.json, data/database/games.db,
-# output/games_sample.csv ni output/audit_report.txt, ya que estos archivos
-# son evidencia exigida por la actividad y deben quedar versionados/visibles
-# en el repositorio.
+# data/processed/games_cleaned.csv, output/games_sample.csv, output/audit_report.txt,
+# output/cleaned_games_sample.csv ni output/cleaning_report.txt, ya que estos
+# archivos son evidencia exigida por las actividades y deben quedar
+# versionados/visibles en el repositorio.

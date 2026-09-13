@@ -5,22 +5,22 @@ Fuente:
 https://www.freetogame.com/api/games
 
 Fecha/hora de ejecución:
-2026-08-29T20:41:58-05:00
+2026-09-12T21:45:00-05:00
 
 Registros extraídos desde API:
-415
+416
 
 Registros almacenados en SQLite:
-415
+416
 
 Resultado de conteo:
 OK
 
 IDs extraídos desde API:
-2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 28, 30, 31, 39, 42, 43, 44 ... (+385 adicionales)
+2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 28, 30, 31, 39, 42, 43, 44 ... (+386 adicionales)
 
 IDs almacenados en SQLite:
-2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 28, 30, 31, 39, 42, 43, 44 ... (+385 adicionales)
+2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 28, 30, 31, 39, 42, 43, 44 ... (+386 adicionales)
 
 IDs faltantes en SQLite:
 Ninguno

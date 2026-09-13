@@ -1,3 +1,19 @@
-requests>=2.31,<3.0
-pandas>=2.0,<3.0
-pytest>=8.0,<9.0
+# --- EA1 (Ingestión) ---
+requests>=2.31,<3.0     # Cliente HTTP para consultar la API de FreeToGame.
+
+# --- EA1 y EA2 (evidencias, pruebas) ---
+pandas>=2.0,<3.0        # Lectura de SQLite (read_sql_query) y generación de CSV de muestra en ambas actividades.
+pytest>=8.0,<9.0        # Framework de pruebas automatizadas (test_ingestion.py y test_preprocessing.py).
+
+# --- EA2 (Preprocesamiento / ELT) ---
+pyspark>=3.5,<4.0       # Motor de procesamiento distribuido (simulado en local[*]) para perfilamiento y limpieza.
+pyarrow>=14.0           # Habilita la conversión Pandas<->Spark vía Arrow (createDataFrame/toPandas),
+                        # evitando la ruta antigua basada en RDD+cloudpickle. Ver src/spark_session.py.
+setuptools>=68          # Provee 'distutils' en Python 3.12+ (removido del stdlib), requerido por pyspark 3.5.x.
+                        # Ver src/spark_session.py para el detalle del workaround y su justificación.
+
+# NOTA: sqlite3 es parte de la biblioteca estándar de Python y no se agrega aquí.
+# NOTA: pyspark requiere Java (JDK 11 o 17) instalado en el sistema/runner de CI.
+# NOTA: si usas Python 3.12+ y prefieres no depender de 'setuptools' como parche,
+# la alternativa definitiva es actualizar a `pyspark>=4.0,<5.0`, versión en la que
+# Apache Spark eliminó por completo el uso de 'distutils' (SPARK-44120).

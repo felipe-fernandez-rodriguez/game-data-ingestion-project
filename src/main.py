@@ -54,15 +54,6 @@ from src.generate_sample import SampleGenerationError, generate_csv_sample  # no
 logger = logging.getLogger(__name__)
 
 
-def configure_logging() -> None:
-    """Configura el logging estándar del proyecto."""
-    logging.basicConfig(
-        level=logging.INFO,
-        format="%(asctime)s - %(levelname)s - %(message)s",
-        datefmt="%Y-%m-%d %H:%M:%S",
-    )
-
-
 def run_pipeline() -> int:
     """
     Ejecuta el pipeline completo de ingestión.
@@ -134,7 +125,7 @@ def _print_summary(api_count: int, db_count: int, sample_size: int, audit_ok: bo
 
 
 def main() -> None:
-    configure_logging()
+    config.configure_logging()
     exit_code = run_pipeline()
     sys.exit(exit_code)
 

@@ -25,8 +25,9 @@ class DatabaseError(Exception):
 # --------------------------------------------------------------------------
 # Esquema de la tabla `games`
 # --------------------------------------------------------------------------
-# Se analizó la estructura real del JSON devuelto por la API  y se diseñaron
-# columnas que reflejan directamente esos campos.
+# Se analizó la estructura real del JSON devuelto por la API (ver punto 1
+# del enunciado) y se diseñaron columnas que reflejan directamente esos
+# campos, sin inventar información adicional.
 #
 # - `id` es la clave primaria natural: la API ya provee un identificador
 #   único y estable por juego.

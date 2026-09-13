@@ -1,0 +1,126 @@
+====================================================
+AUDITORÍA DE PREPROCESAMIENTO Y LIMPIEZA
+====================================================
+
+Proyecto:
+Actividad 2 - Preprocesamiento y Limpieza de Datos (ELT con PySpark)
+
+Fuente:
+D:\Documents\Study\IUDigital\infra_arqui_big_data\ea_big_data\data\database\games.db
+
+Dataset:
+games
+
+Fecha y hora de ejecución:
+2026-09-12T21:41:28-05:00
+
+----------------------------------------------------
+1. EXTRACCIÓN Y CARGA
+----------------------------------------------------
+
+Registros extraídos: 416
+Columnas: 11 (id, title, thumbnail, short_description, game_url, genre, platform, publisher, developer, release_date, freetogame_profile_url)
+Fuente: D:\Documents\Study\IUDigital\infra_arqui_big_data\ea_big_data\data\database\games.db (tabla 'games', generada por la Actividad 1)
+
+----------------------------------------------------
+2. PERFILAMIENTO INICIAL
+----------------------------------------------------
+
+PERFILAMIENTO INICIAL
+=====================
+
+Registros: 416
+Columnas: 11 (id, title, thumbnail, short_description, game_url, genre, platform, publisher, developer, release_date, freetogame_profile_url)
+
+Duplicados (filas completas): 0
+Valores nulos (total): 0
+Valores vacíos (total, texto): 0
+
+ID:
+IDs únicos: 416
+IDs duplicados (filas adicionales): 0
+Rango de id: 2 - 650
+
+release_date:
+Valores válidos: 416
+Valores inválidos: 0
+
+genre:
+Valores distintos: 20
+
+platform:
+Valores distintos: 3
+
+publisher:
+Valores distintos: 328
+
+developer:
+Valores distintos: 346
+
+Nulos por columna:
+  Ninguna columna presenta valores nulos.
+
+----------------------------------------------------
+3. OPERACIONES DE LIMPIEZA
+----------------------------------------------------
+
+Eliminación de duplicados:
+  Duplicados completos eliminados: 0
+  Duplicados por id eliminados: 0
+Resultado: 416 -> 416 registros.
+
+Tratamiento de valores nulos:
+  Filas eliminadas por nulos en campos críticos (id, title): 0
+  Campos importantes imputados con 'Unknown': {'genre': 0, 'platform': 0, 'publisher': 0, 'developer': 0}
+  Campos descriptivos imputados con 'Not Available': {'thumbnail': 0, 'short_description': 0, 'game_url': 0, 'freetogame_profile_url': 0}
+Resultado: 416 -> 416 registros.
+
+Corrección de tipos:
+  id -> IntegerType, campos de texto -> StringType, release_date -> DateType
+Resultado: release_date con 416 valores válidos y 0 invalidados por formato (de 416 valores no nulos originales).
+
+Normalización de texto:
+  Se recortaron espacios y se colapsaron espacios internos en todas las columnas de texto
+  (incluye las variables categóricas genre, platform, publisher, developer).
+Resultado: valores categóricos normalizados sin alterar su semántica original.
+
+Tratamiento de fechas:
+  release_date convertida a DateType (formato yyyy-MM-dd); se agregó la columna derivada
+  'release_year' a partir de la fecha ya validada.
+Resultado: 416 fechas utilizables para análisis por año.
+
+Análisis de outliers:
+Resultado: Análisis de outliers (método IQR) sobre variables numéricas continuas:
+  - release_year: Q1=2013.00, Q3=2021.00, IQR=8.00, límites=[2001.00, 2033.00], outliers detectados=1
+
+----------------------------------------------------
+4. RESULTADOS ANTES Y DESPUÉS
+----------------------------------------------------
+
+Métrica                      Antes        Después
+----------------------------------------------------
+Registros                      416            416
+Duplicados                       0              0
+IDs únicos                     416            416
+Valores nulos                    0              0
+
+----------------------------------------------------
+5. VALIDACIÓN FINAL
+----------------------------------------------------
+
+IDs duplicados: 0
+Valores nulos en campos críticos: 0
+Tipo de 'id' correcto (IntegerType): True
+Tipo de 'release_date' correcto (DateType): True
+Registros válidos finales: 416
+
+Data Quality Score: 100.0%
+  Componentes: {'sin_ids_duplicados': 100.0, 'campos_criticos_completos': 100.0, 'tipos_correctos': 100.0, 'reduccion_de_problemas': 100.0}
+
+----------------------------------------------------
+6. RESULTADO
+----------------------------------------------------
+
+VALIDACIÓN EXITOSA
+
+====================================================

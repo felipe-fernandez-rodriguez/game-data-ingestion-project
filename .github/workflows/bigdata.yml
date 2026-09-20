@@ -66,7 +66,7 @@ jobs:
       # --------------------------------------------------------------
       # Actividad 2 - Preprocesamiento / ELT
       # --------------------------------------------------------------
-      - name: 7. Ejecutar el pipeline de preprocesamiento (EA2: Extract-Load-Transform)
+      - name: 7. Ejecutar el pipeline de preprocesamiento (EA2 Extract-Load-Transform)
         env:
           PYSPARK_PYTHON: python
           SPARK_LOCAL_IP: 127.0.0.1
@@ -107,7 +107,7 @@ jobs:
       # NOTA: la descarga de ambas APIs y el guardado de sus RAW en JSON
       # ocurre DENTRO de src/enrichment.py (mismo patrón que EA1 con
       # FreeToGame), por lo que no hay un paso de "descarga" separado.
-      - name: 11. Ejecutar el pipeline de enriquecimiento (EA3: GamerPower + MMOBomb)
+      - name: 11. Ejecutar el pipeline de enriquecimiento (EA3 GamerPower + MMOBomb)
         env:
           PYSPARK_PYTHON: python
           SPARK_LOCAL_IP: 127.0.0.1

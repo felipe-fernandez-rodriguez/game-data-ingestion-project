@@ -59,7 +59,7 @@ from src.cleaning import (  # noqa: E402
 from src.database import DatabaseError, fetch_all_games, get_connection  # noqa: E402
 from src.generate_sample import SampleGenerationError, write_csv_sample  # noqa: E402
 from src.profiling import ProfileResult, profile_dataframe, render_profile_report  # noqa: E402
-from src.spark_session import get_spark_session, stop_spark_session  # noqa: E402
+from src.spark_session import get_spark_session, pandas_to_spark, stop_spark_session  # noqa: E402
 from src.validation import (  # noqa: E402
     FinalValidationResult,
     ValidationError,
@@ -127,6 +127,11 @@ def load_into_spark(spark, games: list[dict]) -> DataFrame:
     (cientos de registros), este paso intermedio no representa un cuello
     de botella.
 
+    La conversión de Pandas a Spark en sí (incluyendo el manejo de
+    valores nulos en columnas numéricas) la realiza `pandas_to_spark`
+    (ver `spark_session.py`), compartida también con la Actividad 3 para
+    no duplicar esa lógica.
+
     Args:
         spark: Sesión Spark activa.
         games: Lista de registros extraídos desde SQLite.
@@ -134,21 +139,8 @@ def load_into_spark(spark, games: list[dict]) -> DataFrame:
     Returns:
         DataFrame de PySpark con los datos crudos.
     """
-    # `dtype=object` es importante: si se deja que Pandas infiera el tipo
-    # de cada columna y `id` contuviera algún valor `None` (caso límite,
-    # ya que en SQLite `id` es PRIMARY KEY), Pandas convertiría toda la
-    # columna a `float64` representando la ausencia como `NaN`. Spark
-    # distingue `NaN` de `NULL` en columnas numéricas, por lo que un `id`
-    # ausente terminaría como `NaN` en vez de `NULL` y no sería detectado
-    # por `isNull()` en las validaciones posteriores. Construyendo el
-    # DataFrame con `dtype=object` se preserva el `None` real de Python en
-    # cualquier columna, incluida `id`.
-    pdf = pd.DataFrame(games, dtype=object)
-    pdf = pdf.where(pd.notnull(pdf), None)
-
-    df = spark.createDataFrame(pdf)
-    logger.info("DataFrame de Spark creado: %d filas, %d columnas", df.count(), len(df.columns))
-    return df
+    pdf = pd.DataFrame(games)
+    return pandas_to_spark(spark, pdf)
 
 
 # --------------------------------------------------------------------------

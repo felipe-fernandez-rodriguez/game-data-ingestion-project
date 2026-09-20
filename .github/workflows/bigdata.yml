@@ -1,8 +1,10 @@
-name: EA2 - Preprocesamiento y ELT con PySpark
+name: EA2 + EA3 - ELT, Limpieza y Enriquecimiento con PySpark
 
-# Este workflow ejecuta ÚNICAMENTE la Actividad 2. Depende de que la base
-# de datos SQLite de la Actividad 1 (data/database/games.db) ya exista en
-# el repositorio: no vuelve a consultar la API de FreeToGame.
+# Este workflow ejecuta la Actividad 2 (preprocesamiento/ELT) y, a
+# continuación, la Actividad 3 (enriquecimiento con las APIs de
+# GamerPower y MMOBomb). Depende de que la base de datos SQLite de la
+# Actividad 1 (data/database/games.db) ya exista en el repositorio:
+# ninguna de las dos actividades vuelve a consultar la API de FreeToGame.
 on:
   push:
   workflow_dispatch:
@@ -10,8 +12,8 @@ on:
     - cron: "30 6 * * *"  # todos los días a las 06:30 UTC (después de ingestion.yml)
 
 jobs:
-  preprocess:
-    name: Ejecutar pipeline de preprocesamiento (EA2)
+  preprocess_and_enrich:
+    name: Ejecutar pipelines de preprocesamiento (EA2) y enriquecimiento (EA3)
     runs-on: ubuntu-latest
 
     steps:
@@ -52,30 +54,32 @@ jobs:
           echo "Base de datos de EA1 encontrada."
           ls -lh data/database/games.db
 
-      - name: 6. Ejecutar pruebas
+      - name: 6. Ejecutar pruebas (EA1, EA2 y EA3)
         env:
           # Configuración recomendada para PySpark en runners de GitHub
-          # Actions: limita la memoria del driver a lo disponible en el
-          # runner estándar (7 GB) y evita advertencias de red/hostname
-          # resolviendo Spark completamente en modo local.
+          # Actions: evita advertencias de red/hostname resolviendo Spark
+          # completamente en modo local.
           PYSPARK_PYTHON: python
           SPARK_LOCAL_IP: 127.0.0.1
         run: pytest -v
 
-      - name: 7. Ejecutar el pipeline de preprocesamiento (Extract-Load-Transform)
+      # --------------------------------------------------------------
+      # Actividad 2 - Preprocesamiento / ELT
+      # --------------------------------------------------------------
+      - name: 7. Ejecutar el pipeline de preprocesamiento (EA2: Extract-Load-Transform)
         env:
           PYSPARK_PYTHON: python
           SPARK_LOCAL_IP: 127.0.0.1
         run: python src/preprocessing.py
 
-      - name: 8. Verificar que existan los archivos generados
+      - name: 8. Verificar que existan los archivos generados por EA2
         run: |
           test -f data/processed/games_cleaned.csv
           test -f output/cleaned_games_sample.csv
           test -f output/cleaning_report.txt
           echo "Todos los archivos esperados por EA2 fueron generados correctamente."
 
-      - name: 9. Mostrar información de los archivos generados
+      - name: 9. Mostrar información de los archivos generados por EA2
         run: |
           echo "== data/processed/games_cleaned.csv (primeras líneas) =="
           head -n 5 data/processed/games_cleaned.csv
@@ -86,7 +90,7 @@ jobs:
           echo "== output/cleaning_report.txt =="
           cat output/cleaning_report.txt
 
-      - name: 10. Publicar archivos generados como artifacts
+      - name: 10. Publicar archivos generados por EA2 como artifacts
         uses: actions/upload-artifact@v4
         with:
           name: evidencias-preprocesamiento-ea2
@@ -94,5 +98,76 @@ jobs:
             data/processed/games_cleaned.csv
             output/cleaned_games_sample.csv
             output/cleaning_report.txt
+          if-no-files-found: error
+          retention-days: 30
+
+      # --------------------------------------------------------------
+      # Actividad 3 - Enriquecimiento de datos (GamerPower + MMOBomb)
+      # --------------------------------------------------------------
+      # NOTA: la descarga de ambas APIs y el guardado de sus RAW en JSON
+      # ocurre DENTRO de src/enrichment.py (mismo patrón que EA1 con
+      # FreeToGame), por lo que no hay un paso de "descarga" separado.
+      - name: 11. Ejecutar el pipeline de enriquecimiento (EA3: GamerPower + MMOBomb)
+        env:
+          PYSPARK_PYTHON: python
+          SPARK_LOCAL_IP: 127.0.0.1
+        run: python src/enrichment.py
+
+      - name: 12. Verificar que existan los archivos RAW de EA3
+        run: |
+          test -f data/raw/gamerpower/giveaways.json
+          test -f data/raw/mmobomb/games.json
+          echo "Los archivos RAW de GamerPower y MMOBomb están presentes."
+          ls -lh data/raw/gamerpower/ data/raw/mmobomb/
+
+      - name: 13. Verificar que existan los archivos generados por EA3
+        run: |
+          test -f data/enriched/games_enriched.csv
+          test -f output/enriched_games_sample.csv
+          test -f output/enrichment_report.txt
+          echo "Todos los archivos esperados por EA3 fueron generados correctamente."
+
+      - name: 14. Mostrar información de los archivos generados por EA3
+        run: |
+          echo "== data/enriched/games_enriched.csv (primeras líneas) =="
+          head -n 5 data/enriched/games_enriched.csv
+          echo ""
+          echo "== output/enriched_games_sample.csv (primeras líneas) =="
+          head -n 5 output/enriched_games_sample.csv
+          echo ""
+          echo "== output/enrichment_report.txt =="
+          cat output/enrichment_report.txt
+
+      - name: 15. Publicar RAW de GamerPower como artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: gamerpower_raw
+          path: data/raw/gamerpower/giveaways.json
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: 16. Publicar RAW de MMOBomb como artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: mmobomb_raw
+          path: data/raw/mmobomb/games.json
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: 17. Publicar el dataset enriquecido como artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: enriched_dataset
+          path: data/enriched/games_enriched.csv
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: 18. Publicar evidencias de enriquecimiento (muestra + auditoría) como artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: enrichment_evidence
+          path: |
+            output/enriched_games_sample.csv
+            output/enrichment_report.txt
           if-no-files-found: error
           retention-days: 30

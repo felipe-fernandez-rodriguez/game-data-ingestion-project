@@ -31,6 +31,8 @@ from __future__ import annotations
 
 import logging
 
+import pandas as pd
+
 # --------------------------------------------------------------------------
 # Compatibilidad con Python 3.12+ (workaround oficial de Apache Spark)
 # --------------------------------------------------------------------------
@@ -137,3 +139,41 @@ def stop_spark_session(spark: SparkSession) -> None:
     """
     logger.info("Cerrando Spark")
     spark.stop()
+
+
+def pandas_to_spark(spark: SparkSession, pdf: pd.DataFrame):
+    """
+    Convierte un DataFrame de Pandas en un DataFrame de Spark, aplicando
+    las mismas precauciones en ambos puntos donde el proyecto necesita
+    este puente (EA2: SQLite -> Spark; EA3: cada fuente adicional ->
+    Spark), para no duplicar esta lógica en `preprocessing.py` y
+    `enrichment.py`.
+
+    Antes de pasar los datos a Spark, se fuerza `dtype=object` en el
+    DataFrame de Pandas: si se deja que Pandas infiera el tipo de cada
+    columna y alguna columna numérica (por ejemplo `id`) contuviera algún
+    valor `None`, Pandas convertiría toda la columna a `float64`
+    representando la ausencia como `NaN`. Spark distingue `NaN` de `NULL`
+    en columnas numéricas, por lo que un valor ausente terminaría como
+    `NaN` en vez de `NULL` y no sería detectado por `isNull()` en las
+    validaciones posteriores. Construir el DataFrame con `dtype=object`
+    preserva el `None` real de Python en cualquier columna.
+
+    La conversión en sí ocurre vía Apache Arrow (ver la configuración de
+    `get_spark_session`), evitando la ruta antigua basada en RDD +
+    `cloudpickle` que puede fallar con `RecursionError` en algunos
+    entornos Windows + Python 3.12+.
+
+    Args:
+        spark: Sesión Spark activa.
+        pdf: DataFrame de Pandas a convertir (registros ya extraídos de
+            su fuente original: SQLite, JSON, XLSX, CSV, XML, HTML o TXT).
+
+    Returns:
+        DataFrame de PySpark equivalente.
+    """
+    safe_pdf = pdf.astype(object).where(pd.notnull(pdf), None)
+
+    df = spark.createDataFrame(safe_pdf)
+    logger.info("DataFrame de Spark creado: %d filas, %d columnas", df.count(), len(df.columns))
+    return df

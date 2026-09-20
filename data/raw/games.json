@@ -650,6 +650,19 @@
     "freetogame_profile_url": "https://www.freetogame.com/tyr"
   },
   {
+    "id": 651,
+    "title": "Aniimo",
+    "thumbnail": "https://www.freetogame.com/g/651/thumbnail.jpg",
+    "short_description": "A free-to-play open-world creature taming game.",
+    "game_url": "https://www.freetogame.com/open/aniimo",
+    "genre": "RPG",
+    "platform": "PC (Windows)",
+    "publisher": "Pawprint Studio",
+    "developer": "Pawprint Studio",
+    "release_date": "2026-09-15",
+    "freetogame_profile_url": "https://www.freetogame.com/aniimo"
+  },
+  {
     "id": 649,
     "title": "Soul's Remnant",
     "thumbnail": "https://www.freetogame.com/g/649/thumbnail.jpg",

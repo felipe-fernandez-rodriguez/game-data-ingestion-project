@@ -1,0 +1,149 @@
+====================================================
+AUDITORÍA DE ENRIQUECIMIENTO
+====================================================
+
+Actividad:
+EA3 - Enriquecimiento de Datos
+
+Dataset base:
+D:\Documents\Study\IUDigital\infra_arqui_big_data\ea_big_data\data\processed\games_cleaned.csv
+
+----------------------------------------------------
+FUENTES UTILIZADAS
+----------------------------------------------------
+
+GamerPower:
+https://www.gamerpower.com/api/giveaways
+
+Archivo RAW:
+D:\Documents\Study\IUDigital\infra_arqui_big_data\ea_big_data\data\raw\gamerpower\giveaways.json
+
+MMOBomb:
+https://www.mmobomb.com/api1/games
+
+Archivo RAW:
+D:\Documents\Study\IUDigital\infra_arqui_big_data\ea_big_data\data\raw\mmobomb\games.json
+
+Fecha y hora:
+2026-09-20T15:07:33-05:00
+
+----------------------------------------------------
+1. DATASET BASE
+----------------------------------------------------
+
+Registros: 417
+Columnas: 13
+IDs únicos: 417
+
+----------------------------------------------------
+2. GAMERPOWER
+----------------------------------------------------
+
+Registros descargados: 101
+Títulos únicos: 101
+Duplicados detectados: 0
+Coincidencias: 0
+No coincidencias: 417
+Cobertura: 0.0%
+
+Columnas integradas: gamerpower_id, gamerpower_worth, gamerpower_type, gamerpower_platforms, gamerpower_status, gamerpower_users, gamerpower_published_date, gamerpower_end_date, gamerpower_url
+
+----------------------------------------------------
+3. MMOBOMB
+----------------------------------------------------
+
+Registros descargados: 416
+Títulos únicos: 416
+Duplicados detectados: 0
+Coincidencias: 395
+No coincidencias: 22
+Cobertura: 94.72%
+
+Columnas integradas: mmobomb_id, mmobomb_genre, mmobomb_platform, mmobomb_publisher, mmobomb_developer, mmobomb_release_date, mmobomb_profile_url, genre_match, platform_match, publisher_match, developer_match
+
+----------------------------------------------------
+4. HOMOLOGACIÓN
+----------------------------------------------------
+
+Clave principal:
+title
+
+Clave auxiliar:
+title_match
+
+Transformaciones:
+- title_match se calculó normalizando 'title' (minúsculas, espacios colapsados, eliminación de sufijos 'Giveaway' y anotaciones de distribuidor entre paréntesis propias de GamerPower), sin modificar el campo 'title' original.
+
+----------------------------------------------------
+5. CONTROL DE DUPLICADOS
+----------------------------------------------------
+
+Duplicados fuente GamerPower: 0
+Duplicados fuente MMOBomb: 0
+
+Duplicados resultado (ids duplicados en el dataset final): 0
+
+----------------------------------------------------
+6. CONTROL DE CARDINALIDAD
+----------------------------------------------------
+
+Dataset base: 417 -> 417 (cambio: +0)
+Después de GamerPower: 417 -> 417 (cambio: +0)
+Después de MMOBomb: 417 -> 417 (cambio: +0)
+
+Registros base: 417
+Después de GamerPower: 417
+Después de MMOBomb: 417
+Registros finales: 417
+
+----------------------------------------------------
+7. DATASET ENRIQUECIDO
+----------------------------------------------------
+
+Columnas originales: 13
+Nuevas columnas: 20
+Columnas finales: 33
+Registros finales: 417
+Porcentaje de enriquecimiento: 153.85% más columnas respecto al dataset base
+
+----------------------------------------------------
+8. VALIDACIÓN
+----------------------------------------------------
+
+¿Se conservaron los registros base?: Sí
+¿Se mantuvo 1 juego = 1 registro?: Sí
+¿Existen IDs duplicados?: No
+¿Existen coincidencias ambiguas?: No
+
+----------------------------------------------------
+9. RESULTADO
+----------------------------------------------------
+
+ENRIQUECIMIENTO EXITOSO
+
+----------------------------------------------------
+10. DATA LINEAGE (columnas nuevas de EA3)
+----------------------------------------------------
+
+  title_match                -> Actividad 3 / derivada de 'title' (normalización para matching)
+  gamerpower_id              -> Actividad 3 / GamerPower API
+  gamerpower_worth           -> Actividad 3 / GamerPower API
+  gamerpower_type            -> Actividad 3 / GamerPower API
+  gamerpower_platforms       -> Actividad 3 / GamerPower API
+  gamerpower_status          -> Actividad 3 / GamerPower API
+  gamerpower_users           -> Actividad 3 / GamerPower API
+  gamerpower_published_date  -> Actividad 3 / GamerPower API
+  gamerpower_end_date        -> Actividad 3 / GamerPower API
+  gamerpower_url             -> Actividad 3 / GamerPower API
+  mmobomb_id                 -> Actividad 3 / MMOBomb API
+  mmobomb_genre              -> Actividad 3 / MMOBomb API
+  mmobomb_platform           -> Actividad 3 / MMOBomb API
+  mmobomb_publisher          -> Actividad 3 / MMOBomb API
+  mmobomb_developer          -> Actividad 3 / MMOBomb API
+  mmobomb_release_date       -> Actividad 3 / MMOBomb API
+  mmobomb_profile_url        -> Actividad 3 / MMOBomb API
+  genre_match                -> Actividad 3 / comparación FreeToGame vs MMOBomb
+  platform_match             -> Actividad 3 / comparación FreeToGame vs MMOBomb
+  publisher_match            -> Actividad 3 / comparación FreeToGame vs MMOBomb
+  developer_match            -> Actividad 3 / comparación FreeToGame vs MMOBomb
+====================================================

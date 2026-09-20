@@ -21,9 +21,12 @@ derby.log
 metastore_db/
 spark-warehouse/
 
-# --- Evidencias de EA1 y EA2 ---
+# --- Evidencias de EA1, EA2 y EA3 ---
 # NOTA: A propósito NO se ignoran data/raw/games.json, data/database/games.db,
-# data/processed/games_cleaned.csv, output/games_sample.csv, output/audit_report.txt,
-# output/cleaned_games_sample.csv ni output/cleaning_report.txt, ya que estos
-# archivos son evidencia exigida por las actividades y deben quedar
-# versionados/visibles en el repositorio.
+# data/processed/games_cleaned.csv, data/raw/gamerpower/giveaways.json,
+# data/raw/mmobomb/games.json, data/mappings/title_mapping.csv,
+# data/enriched/games_enriched.csv, output/games_sample.csv, output/audit_report.txt,
+# output/cleaned_games_sample.csv, output/cleaning_report.txt, output/enriched_games_sample.csv
+# ni output/enrichment_report.txt, ya que estos archivos son evidencia exigida por las
+# actividades (o, en el caso de title_mapping.csv, configuración versionada del proyecto)
+# y deben quedar versionados/visibles en el repositorio.

@@ -119,17 +119,17 @@ game-data-ingestion-project/
 │
 ├── data/
 │   ├── raw/
-│   │   ├── games.json           # RAW FreeToGame
+│   │   ├── games.json                  # RAW FreeToGame
 │   │   ├── gamerpower/giveaways.json   # RAW GamerPower
 │   │   └── mmobomb/games.json          # RAW MMOBomb
-│   ├── database/games.db        # SQLite (tabla games)
+│   ├── database/games.db               # SQLite (tabla games)
 │   ├── processed/games_cleaned.csv     # Dataset limpio (contrato de la capa 2)
 │   ├── mappings/title_mapping.csv      # Equivalencias manuales de título (vacío por defecto)
 │   └── enriched/games_enriched.csv     # Dataset analítico final
 │
 ├── docs/
 │   ├── Arquitectura_Modelo_Datos.pdf   # Documentación de arquitectura y modelo de datos
-│   └── diagrams/                # Diagramas editables (.drawio) y su versión PNG
+│   └── diagrams/                       # Diagramas editables (.drawio) y su versión PNG
 │       ├── arquitectura_general.drawio / .png
 │       ├── flujo_ingesta.drawio / .png
 │       ├── flujo_elt.drawio / .png
